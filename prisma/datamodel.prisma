@@ -1,0 +1,29 @@
+type User{
+    id: ID! @id
+    name: String!
+    email: String
+    phone: String!
+    level: Class! @relation(name:"UserLevel")
+    password: String!
+    createdAt: DateTime! @createdAt
+}
+type Class{
+    id: ID! @id
+    label: String!
+    description: String!
+    illustration: String!
+    courses: [Course] @relation(name:"ClassCourse")
+    students: [User] @relation(name:"UserLevel")
+    createdAt: DateTime! @createdAt
+}
+type Course{
+    id: ID! @id
+    chapterNumber: Int!
+    title: String!
+    description: String!
+    illustration: String!
+    pdfLink: String
+    videoLink: String
+    level: Class @relation(name:"ClassCourse")
+    createdAt: DateTime! @createdAt
+}
