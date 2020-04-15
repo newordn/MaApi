@@ -29,17 +29,21 @@ const logIn = async (parent,args,context,info)=>{
     }
 }
 const classe = async (parent,args,context,info)=>{
+    console.log('classe mutation')
     const illustration = await context.storeUpload(args.illustration)
     const classe = await context.prisma.createClass({...args,illustration:illustration.path})
     return classe
 }
 
 const course = async (parent,args,context,info)=>{
+    console.log('course mutation')
+    let pdfLink={path:""}
+    let videoLink={path:""}
     const illustration = await context.storeUpload(args.illustration)
     if(args.pdfLink!==null)
-    const pdfLink = await context.storeUpload(args.pdfLink)
-    if(args.videoLink!==null)
-    const videoLink = await context.storeUpload(args.videoLink)
+    pdfLink = await context.storeUpload(args.pdfLink)
+    if(args.videoLink)
+    videoLink = await context.storeUpload(args.videoLink)
     const course = await context.prisma.createCourse({...args,pdfLink:pdfLink.path,videoLink:videoLink.path,illustration:illustration.path,level:{connect:{id:args.level}}})
     return course
 }

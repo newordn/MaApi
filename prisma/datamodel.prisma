@@ -1,8 +1,8 @@
 type User{
     id: ID! @id
     name: String!
-    email: String
-    phone: String!
+    email: String! @unique
+    phone: String! @unique
     level: Class! @relation(name:"UserLevel")
     password: String!
     createdAt: DateTime! @createdAt

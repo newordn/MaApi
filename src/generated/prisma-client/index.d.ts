@@ -465,7 +465,7 @@ export interface UserUpdateWithWhereUniqueWithoutLevelInput {
 export interface UserCreateWithoutLevelInput {
   id?: Maybe<ID_Input>;
   name: String;
-  email?: Maybe<String>;
+  email: String;
   phone: String;
   password: String;
 }
@@ -671,6 +671,8 @@ export interface ClassUpdateOneWithoutCoursesInput {
 
 export type UserWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
+  email?: Maybe<String>;
+  phone?: Maybe<String>;
 }>;
 
 export interface CourseUpdateManyWithWhereNestedInput {
@@ -1002,7 +1004,7 @@ export interface ClassUpdateWithoutCoursesDataInput {
 export interface UserCreateInput {
   id?: Maybe<ID_Input>;
   name: String;
-  email?: Maybe<String>;
+  email: String;
   phone: String;
   level: ClassCreateOneWithoutStudentsInput;
   password: String;
@@ -1015,7 +1017,7 @@ export interface NodeNode {
 export interface UserPreviousValues {
   id: ID_Output;
   name: String;
-  email?: String;
+  email: String;
   phone: String;
   password: String;
   createdAt: DateTimeOutput;
@@ -1290,7 +1292,7 @@ export interface CourseConnectionSubscription
 export interface User {
   id: ID_Output;
   name: String;
-  email?: String;
+  email: String;
   phone: String;
   password: String;
   createdAt: DateTimeOutput;

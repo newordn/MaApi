@@ -691,7 +691,7 @@ type Subscription {
 type User {
   id: ID!
   name: String!
-  email: String
+  email: String!
   phone: String!
   level: Class!
   password: String!
@@ -707,7 +707,7 @@ type UserConnection {
 input UserCreateInput {
   id: ID
   name: String!
-  email: String
+  email: String!
   phone: String!
   level: ClassCreateOneWithoutStudentsInput!
   password: String!
@@ -721,7 +721,7 @@ input UserCreateManyWithoutLevelInput {
 input UserCreateWithoutLevelInput {
   id: ID
   name: String!
-  email: String
+  email: String!
   phone: String!
   password: String!
 }
@@ -749,7 +749,7 @@ enum UserOrderByInput {
 type UserPreviousValues {
   id: ID!
   name: String!
-  email: String
+  email: String!
   phone: String!
   password: String!
   createdAt: DateTime!
@@ -1001,6 +1001,8 @@ input UserWhereInput {
 
 input UserWhereUniqueInput {
   id: ID
+  email: String
+  phone: String
 }
 `
       }
