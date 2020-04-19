@@ -40,9 +40,14 @@ const course = async (parent,args,context,info)=>{
     let pdfLink={path:""}
     let videoLink={path:""}
     let illustration={path:""}
+    console.log(args.illustration)
     if(args.illustration!==null)
     illustration = await context.storeUpload(args.illustration)
-    const course = await context.prisma.createCourse({...args,pdfLink:"",videoLink:"",illustration:illustration.path,level:{connect:{id:args.level}}})
+    if(args.pdfLink!==null)
+    pdfLink = await context.storeUpload(args.pdfLink)
+    if(args.videoLink!==null)
+    videoLink = await context.storeUpload(args.videoLink)
+    const course = await context.prisma.createCourse({...args,pdfLink:pdfLink.path,videoLink:videoLink.path,illustration:illustration.path,level:{connect:{id:args.level}}})
     return course
 }
 
