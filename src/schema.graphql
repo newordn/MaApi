@@ -12,7 +12,7 @@ type Mutation{
     logIn(phone:String!,password:String!): AuthPayload!
     signUp(name:String!,email:String,phone:String!,level:ID!,password:String!): AuthPayload!
     course(chapterNumber:Int!,title:String!,description:String!,illustration:Upload,pdfLink:Upload,videoLink:String,level:ID!): Course!
-    subject(title:String!,description:String!,illustration:Upload,td:Upload,correction:Upload,level:ID!): Course!
+    subject(title:String!,description:String!,illustration:Upload,td:Upload,correction:Upload,level:ID!): Subject!
     classe(label:String!,description:String!,illustration:Upload!): Class!
    }
    type AuthPayload{
