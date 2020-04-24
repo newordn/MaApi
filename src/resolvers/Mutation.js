@@ -48,9 +48,26 @@ const course = async (parent,args,context,info)=>{
     return course
 }
 
+const subject = async (parent,args,context,info)=>{
+    console.log('subject mutation')
+    let td={path:""}
+    let correction={path:""}
+    let illustration={path:""}
+    if(args.illustration!==null)
+    illustration = await context.storeUpload(args.illustration)
+    if(args.td!==null)
+    td = await context.storeUpload(args.td)
+    if(args.correction!==null)
+    correction = await context.storeUpload(args.correction)
+    
+    const subject = await context.prisma.createSubject({...args,td:td.path,correction:correction.path,illustration:illustration.path,level:{connect:{id:args.level}}})
+    return subject
+}
+
 module.exports={
     logIn,
     signUp,
     course,
-    classe
+    classe,
+    subject
 }

@@ -11,6 +11,10 @@ type AggregateCourse {
   count: Int!
 }
 
+type AggregateSubject {
+  count: Int!
+}
+
 type AggregateUser {
   count: Int!
 }
@@ -25,6 +29,7 @@ type Class {
   description: String!
   illustration: String!
   courses(where: CourseWhereInput, orderBy: CourseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Course!]
+  subjects(where: SubjectWhereInput, orderBy: SubjectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Subject!]
   students(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
   createdAt: DateTime!
 }
@@ -41,6 +46,7 @@ input ClassCreateInput {
   description: String!
   illustration: String!
   courses: CourseCreateManyWithoutLevelInput
+  subjects: SubjectCreateManyWithoutLevelInput
   students: UserCreateManyWithoutLevelInput
 }
 
@@ -54,11 +60,17 @@ input ClassCreateOneWithoutStudentsInput {
   connect: ClassWhereUniqueInput
 }
 
+input ClassCreateOneWithoutSubjectsInput {
+  create: ClassCreateWithoutSubjectsInput
+  connect: ClassWhereUniqueInput
+}
+
 input ClassCreateWithoutCoursesInput {
   id: ID
   label: String!
   description: String!
   illustration: String!
+  subjects: SubjectCreateManyWithoutLevelInput
   students: UserCreateManyWithoutLevelInput
 }
 
@@ -68,6 +80,16 @@ input ClassCreateWithoutStudentsInput {
   description: String!
   illustration: String!
   courses: CourseCreateManyWithoutLevelInput
+  subjects: SubjectCreateManyWithoutLevelInput
+}
+
+input ClassCreateWithoutSubjectsInput {
+  id: ID
+  label: String!
+  description: String!
+  illustration: String!
+  courses: CourseCreateManyWithoutLevelInput
+  students: UserCreateManyWithoutLevelInput
 }
 
 type ClassEdge {
@@ -119,6 +141,7 @@ input ClassUpdateInput {
   description: String
   illustration: String
   courses: CourseUpdateManyWithoutLevelInput
+  subjects: SubjectUpdateManyWithoutLevelInput
   students: UserUpdateManyWithoutLevelInput
 }
 
@@ -144,10 +167,20 @@ input ClassUpdateOneWithoutCoursesInput {
   connect: ClassWhereUniqueInput
 }
 
+input ClassUpdateOneWithoutSubjectsInput {
+  create: ClassCreateWithoutSubjectsInput
+  update: ClassUpdateWithoutSubjectsDataInput
+  upsert: ClassUpsertWithoutSubjectsInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: ClassWhereUniqueInput
+}
+
 input ClassUpdateWithoutCoursesDataInput {
   label: String
   description: String
   illustration: String
+  subjects: SubjectUpdateManyWithoutLevelInput
   students: UserUpdateManyWithoutLevelInput
 }
 
@@ -156,6 +189,15 @@ input ClassUpdateWithoutStudentsDataInput {
   description: String
   illustration: String
   courses: CourseUpdateManyWithoutLevelInput
+  subjects: SubjectUpdateManyWithoutLevelInput
+}
+
+input ClassUpdateWithoutSubjectsDataInput {
+  label: String
+  description: String
+  illustration: String
+  courses: CourseUpdateManyWithoutLevelInput
+  students: UserUpdateManyWithoutLevelInput
 }
 
 input ClassUpsertWithoutCoursesInput {
@@ -166,6 +208,11 @@ input ClassUpsertWithoutCoursesInput {
 input ClassUpsertWithoutStudentsInput {
   update: ClassUpdateWithoutStudentsDataInput!
   create: ClassCreateWithoutStudentsInput!
+}
+
+input ClassUpsertWithoutSubjectsInput {
+  update: ClassUpdateWithoutSubjectsDataInput!
+  create: ClassCreateWithoutSubjectsInput!
 }
 
 input ClassWhereInput {
@@ -228,6 +275,9 @@ input ClassWhereInput {
   courses_every: CourseWhereInput
   courses_some: CourseWhereInput
   courses_none: CourseWhereInput
+  subjects_every: SubjectWhereInput
+  subjects_some: SubjectWhereInput
+  subjects_none: SubjectWhereInput
   students_every: UserWhereInput
   students_some: UserWhereInput
   students_none: UserWhereInput
@@ -644,6 +694,12 @@ type Mutation {
   upsertCourse(where: CourseWhereUniqueInput!, create: CourseCreateInput!, update: CourseUpdateInput!): Course!
   deleteCourse(where: CourseWhereUniqueInput!): Course
   deleteManyCourses(where: CourseWhereInput): BatchPayload!
+  createSubject(data: SubjectCreateInput!): Subject!
+  updateSubject(data: SubjectUpdateInput!, where: SubjectWhereUniqueInput!): Subject
+  updateManySubjects(data: SubjectUpdateManyMutationInput!, where: SubjectWhereInput): BatchPayload!
+  upsertSubject(where: SubjectWhereUniqueInput!, create: SubjectCreateInput!, update: SubjectUpdateInput!): Subject!
+  deleteSubject(where: SubjectWhereUniqueInput!): Subject
+  deleteManySubjects(where: SubjectWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
@@ -676,15 +732,352 @@ type Query {
   course(where: CourseWhereUniqueInput!): Course
   courses(where: CourseWhereInput, orderBy: CourseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Course]!
   coursesConnection(where: CourseWhereInput, orderBy: CourseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CourseConnection!
+  subject(where: SubjectWhereUniqueInput!): Subject
+  subjects(where: SubjectWhereInput, orderBy: SubjectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Subject]!
+  subjectsConnection(where: SubjectWhereInput, orderBy: SubjectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SubjectConnection!
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
   node(id: ID!): Node
 }
 
+type Subject {
+  id: ID!
+  title: String!
+  description: String!
+  illustration: String!
+  td: String!
+  correction: String
+  level: Class
+}
+
+type SubjectConnection {
+  pageInfo: PageInfo!
+  edges: [SubjectEdge]!
+  aggregate: AggregateSubject!
+}
+
+input SubjectCreateInput {
+  id: ID
+  title: String!
+  description: String!
+  illustration: String!
+  td: String!
+  correction: String
+  level: ClassCreateOneWithoutSubjectsInput
+}
+
+input SubjectCreateManyWithoutLevelInput {
+  create: [SubjectCreateWithoutLevelInput!]
+  connect: [SubjectWhereUniqueInput!]
+}
+
+input SubjectCreateWithoutLevelInput {
+  id: ID
+  title: String!
+  description: String!
+  illustration: String!
+  td: String!
+  correction: String
+}
+
+type SubjectEdge {
+  node: Subject!
+  cursor: String!
+}
+
+enum SubjectOrderByInput {
+  id_ASC
+  id_DESC
+  title_ASC
+  title_DESC
+  description_ASC
+  description_DESC
+  illustration_ASC
+  illustration_DESC
+  td_ASC
+  td_DESC
+  correction_ASC
+  correction_DESC
+}
+
+type SubjectPreviousValues {
+  id: ID!
+  title: String!
+  description: String!
+  illustration: String!
+  td: String!
+  correction: String
+}
+
+input SubjectScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_lt: String
+  title_lte: String
+  title_gt: String
+  title_gte: String
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
+  description: String
+  description_not: String
+  description_in: [String!]
+  description_not_in: [String!]
+  description_lt: String
+  description_lte: String
+  description_gt: String
+  description_gte: String
+  description_contains: String
+  description_not_contains: String
+  description_starts_with: String
+  description_not_starts_with: String
+  description_ends_with: String
+  description_not_ends_with: String
+  illustration: String
+  illustration_not: String
+  illustration_in: [String!]
+  illustration_not_in: [String!]
+  illustration_lt: String
+  illustration_lte: String
+  illustration_gt: String
+  illustration_gte: String
+  illustration_contains: String
+  illustration_not_contains: String
+  illustration_starts_with: String
+  illustration_not_starts_with: String
+  illustration_ends_with: String
+  illustration_not_ends_with: String
+  td: String
+  td_not: String
+  td_in: [String!]
+  td_not_in: [String!]
+  td_lt: String
+  td_lte: String
+  td_gt: String
+  td_gte: String
+  td_contains: String
+  td_not_contains: String
+  td_starts_with: String
+  td_not_starts_with: String
+  td_ends_with: String
+  td_not_ends_with: String
+  correction: String
+  correction_not: String
+  correction_in: [String!]
+  correction_not_in: [String!]
+  correction_lt: String
+  correction_lte: String
+  correction_gt: String
+  correction_gte: String
+  correction_contains: String
+  correction_not_contains: String
+  correction_starts_with: String
+  correction_not_starts_with: String
+  correction_ends_with: String
+  correction_not_ends_with: String
+  AND: [SubjectScalarWhereInput!]
+  OR: [SubjectScalarWhereInput!]
+  NOT: [SubjectScalarWhereInput!]
+}
+
+type SubjectSubscriptionPayload {
+  mutation: MutationType!
+  node: Subject
+  updatedFields: [String!]
+  previousValues: SubjectPreviousValues
+}
+
+input SubjectSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: SubjectWhereInput
+  AND: [SubjectSubscriptionWhereInput!]
+  OR: [SubjectSubscriptionWhereInput!]
+  NOT: [SubjectSubscriptionWhereInput!]
+}
+
+input SubjectUpdateInput {
+  title: String
+  description: String
+  illustration: String
+  td: String
+  correction: String
+  level: ClassUpdateOneWithoutSubjectsInput
+}
+
+input SubjectUpdateManyDataInput {
+  title: String
+  description: String
+  illustration: String
+  td: String
+  correction: String
+}
+
+input SubjectUpdateManyMutationInput {
+  title: String
+  description: String
+  illustration: String
+  td: String
+  correction: String
+}
+
+input SubjectUpdateManyWithoutLevelInput {
+  create: [SubjectCreateWithoutLevelInput!]
+  delete: [SubjectWhereUniqueInput!]
+  connect: [SubjectWhereUniqueInput!]
+  set: [SubjectWhereUniqueInput!]
+  disconnect: [SubjectWhereUniqueInput!]
+  update: [SubjectUpdateWithWhereUniqueWithoutLevelInput!]
+  upsert: [SubjectUpsertWithWhereUniqueWithoutLevelInput!]
+  deleteMany: [SubjectScalarWhereInput!]
+  updateMany: [SubjectUpdateManyWithWhereNestedInput!]
+}
+
+input SubjectUpdateManyWithWhereNestedInput {
+  where: SubjectScalarWhereInput!
+  data: SubjectUpdateManyDataInput!
+}
+
+input SubjectUpdateWithoutLevelDataInput {
+  title: String
+  description: String
+  illustration: String
+  td: String
+  correction: String
+}
+
+input SubjectUpdateWithWhereUniqueWithoutLevelInput {
+  where: SubjectWhereUniqueInput!
+  data: SubjectUpdateWithoutLevelDataInput!
+}
+
+input SubjectUpsertWithWhereUniqueWithoutLevelInput {
+  where: SubjectWhereUniqueInput!
+  update: SubjectUpdateWithoutLevelDataInput!
+  create: SubjectCreateWithoutLevelInput!
+}
+
+input SubjectWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_lt: String
+  title_lte: String
+  title_gt: String
+  title_gte: String
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
+  description: String
+  description_not: String
+  description_in: [String!]
+  description_not_in: [String!]
+  description_lt: String
+  description_lte: String
+  description_gt: String
+  description_gte: String
+  description_contains: String
+  description_not_contains: String
+  description_starts_with: String
+  description_not_starts_with: String
+  description_ends_with: String
+  description_not_ends_with: String
+  illustration: String
+  illustration_not: String
+  illustration_in: [String!]
+  illustration_not_in: [String!]
+  illustration_lt: String
+  illustration_lte: String
+  illustration_gt: String
+  illustration_gte: String
+  illustration_contains: String
+  illustration_not_contains: String
+  illustration_starts_with: String
+  illustration_not_starts_with: String
+  illustration_ends_with: String
+  illustration_not_ends_with: String
+  td: String
+  td_not: String
+  td_in: [String!]
+  td_not_in: [String!]
+  td_lt: String
+  td_lte: String
+  td_gt: String
+  td_gte: String
+  td_contains: String
+  td_not_contains: String
+  td_starts_with: String
+  td_not_starts_with: String
+  td_ends_with: String
+  td_not_ends_with: String
+  correction: String
+  correction_not: String
+  correction_in: [String!]
+  correction_not_in: [String!]
+  correction_lt: String
+  correction_lte: String
+  correction_gt: String
+  correction_gte: String
+  correction_contains: String
+  correction_not_contains: String
+  correction_starts_with: String
+  correction_not_starts_with: String
+  correction_ends_with: String
+  correction_not_ends_with: String
+  level: ClassWhereInput
+  AND: [SubjectWhereInput!]
+  OR: [SubjectWhereInput!]
+  NOT: [SubjectWhereInput!]
+}
+
+input SubjectWhereUniqueInput {
+  id: ID
+}
+
 type Subscription {
   class(where: ClassSubscriptionWhereInput): ClassSubscriptionPayload
   course(where: CourseSubscriptionWhereInput): CourseSubscriptionPayload
+  subject(where: SubjectSubscriptionWhereInput): SubjectSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
 

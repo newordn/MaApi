@@ -6,11 +6,13 @@ type Query{
     classes: [Class!]!
     courses: [Course!]!
     coursesByClass(classId:ID!):[Course!]!
+    subjectsByClass(classId:ID!): [Subject!]!
 }
 type Mutation{
     logIn(phone:String!,password:String!): AuthPayload!
     signUp(name:String!,email:String,phone:String!,level:ID!,password:String!): AuthPayload!
     course(chapterNumber:Int!,title:String!,description:String!,illustration:Upload,pdfLink:Upload,videoLink:String,level:ID!): Course!
+    subject(title:String!,description:String!,illustration:Upload,td:Upload,correction:String,level:ID!): Course!
     classe(label:String!,description:String!,illustration:Upload!): Class!
    }
    type AuthPayload{
@@ -31,6 +33,7 @@ type Class{
     description:String!
     illustration:String!
     courses: [Course]
+    subjects: [Subject]
     students: [User]
 }
 type Course{
@@ -41,6 +44,15 @@ type Course{
     illustration: String!
     pdfLink: String
     videoLink: String
+    level: Class
+}
+type Subject{
+    id: ID!
+    title: String!
+    description: String!
+    illustration: String!
+    td: String!
+    correction: String
     level: Class
 }
 `

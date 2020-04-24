@@ -13,6 +13,7 @@ type Class{
     description: String!
     illustration: String!
     courses: [Course] @relation(name:"ClassCourse")
+    subjects: [Subject] @relation(name:"ClassSubject")
     students: [User] @relation(name:"UserLevel")
     createdAt: DateTime! @createdAt
 }
@@ -26,4 +27,13 @@ type Course{
     videoLink: String
     level: Class @relation(name:"ClassCourse")
     createdAt: DateTime! @createdAt
+}
+type Subject{
+    id: ID! @id
+    title: String!
+    description: String!
+    illustration: String!
+    td: String!
+    correction: String
+    level: Class @relation(name:"ClassSubject")
 }

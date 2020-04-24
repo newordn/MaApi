@@ -17,10 +17,17 @@ const coursesByClass = async (parent,args,context,info)=>
     const courses = await context.prisma.class({id:args.classId}).courses({orderBy:'id_DESC'})
     return courses
 }
+const subjectsByClass = async (parent,args,context,info)=>
+{
+    console.log('subjects by class query')
+    const subjects = await context.prisma.class({id:args.classId}).subjects({orderBy:'id_DESC'})
+    return subjects
+}
 
 module.exports={
     info,
     classes,
     courses,
-    coursesByClass
+    coursesByClass,
+    subjectsByClass
 }
