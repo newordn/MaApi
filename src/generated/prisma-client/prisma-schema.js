@@ -7,6 +7,10 @@ module.exports = {
   count: Int!
 }
 
+type AggregateComment {
+  count: Int!
+}
+
 type AggregateCourse {
   count: Int!
 }
@@ -298,6 +302,252 @@ input ClassWhereUniqueInput {
   id: ID
 }
 
+type Comment {
+  id: ID!
+  content: String!
+  author: User!
+  createdAt: DateTime!
+  onCourse: Course!
+}
+
+type CommentConnection {
+  pageInfo: PageInfo!
+  edges: [CommentEdge]!
+  aggregate: AggregateComment!
+}
+
+input CommentCreateInput {
+  id: ID
+  content: String!
+  author: UserCreateOneWithoutCommentsInput!
+  onCourse: CourseCreateOneWithoutCommentsInput!
+}
+
+input CommentCreateManyWithoutAuthorInput {
+  create: [CommentCreateWithoutAuthorInput!]
+  connect: [CommentWhereUniqueInput!]
+}
+
+input CommentCreateManyWithoutOnCourseInput {
+  create: [CommentCreateWithoutOnCourseInput!]
+  connect: [CommentWhereUniqueInput!]
+}
+
+input CommentCreateWithoutAuthorInput {
+  id: ID
+  content: String!
+  onCourse: CourseCreateOneWithoutCommentsInput!
+}
+
+input CommentCreateWithoutOnCourseInput {
+  id: ID
+  content: String!
+  author: UserCreateOneWithoutCommentsInput!
+}
+
+type CommentEdge {
+  node: Comment!
+  cursor: String!
+}
+
+enum CommentOrderByInput {
+  id_ASC
+  id_DESC
+  content_ASC
+  content_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type CommentPreviousValues {
+  id: ID!
+  content: String!
+  createdAt: DateTime!
+}
+
+input CommentScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  content: String
+  content_not: String
+  content_in: [String!]
+  content_not_in: [String!]
+  content_lt: String
+  content_lte: String
+  content_gt: String
+  content_gte: String
+  content_contains: String
+  content_not_contains: String
+  content_starts_with: String
+  content_not_starts_with: String
+  content_ends_with: String
+  content_not_ends_with: String
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  AND: [CommentScalarWhereInput!]
+  OR: [CommentScalarWhereInput!]
+  NOT: [CommentScalarWhereInput!]
+}
+
+type CommentSubscriptionPayload {
+  mutation: MutationType!
+  node: Comment
+  updatedFields: [String!]
+  previousValues: CommentPreviousValues
+}
+
+input CommentSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: CommentWhereInput
+  AND: [CommentSubscriptionWhereInput!]
+  OR: [CommentSubscriptionWhereInput!]
+  NOT: [CommentSubscriptionWhereInput!]
+}
+
+input CommentUpdateInput {
+  content: String
+  author: UserUpdateOneRequiredWithoutCommentsInput
+  onCourse: CourseUpdateOneRequiredWithoutCommentsInput
+}
+
+input CommentUpdateManyDataInput {
+  content: String
+}
+
+input CommentUpdateManyMutationInput {
+  content: String
+}
+
+input CommentUpdateManyWithoutAuthorInput {
+  create: [CommentCreateWithoutAuthorInput!]
+  delete: [CommentWhereUniqueInput!]
+  connect: [CommentWhereUniqueInput!]
+  set: [CommentWhereUniqueInput!]
+  disconnect: [CommentWhereUniqueInput!]
+  update: [CommentUpdateWithWhereUniqueWithoutAuthorInput!]
+  upsert: [CommentUpsertWithWhereUniqueWithoutAuthorInput!]
+  deleteMany: [CommentScalarWhereInput!]
+  updateMany: [CommentUpdateManyWithWhereNestedInput!]
+}
+
+input CommentUpdateManyWithoutOnCourseInput {
+  create: [CommentCreateWithoutOnCourseInput!]
+  delete: [CommentWhereUniqueInput!]
+  connect: [CommentWhereUniqueInput!]
+  set: [CommentWhereUniqueInput!]
+  disconnect: [CommentWhereUniqueInput!]
+  update: [CommentUpdateWithWhereUniqueWithoutOnCourseInput!]
+  upsert: [CommentUpsertWithWhereUniqueWithoutOnCourseInput!]
+  deleteMany: [CommentScalarWhereInput!]
+  updateMany: [CommentUpdateManyWithWhereNestedInput!]
+}
+
+input CommentUpdateManyWithWhereNestedInput {
+  where: CommentScalarWhereInput!
+  data: CommentUpdateManyDataInput!
+}
+
+input CommentUpdateWithoutAuthorDataInput {
+  content: String
+  onCourse: CourseUpdateOneRequiredWithoutCommentsInput
+}
+
+input CommentUpdateWithoutOnCourseDataInput {
+  content: String
+  author: UserUpdateOneRequiredWithoutCommentsInput
+}
+
+input CommentUpdateWithWhereUniqueWithoutAuthorInput {
+  where: CommentWhereUniqueInput!
+  data: CommentUpdateWithoutAuthorDataInput!
+}
+
+input CommentUpdateWithWhereUniqueWithoutOnCourseInput {
+  where: CommentWhereUniqueInput!
+  data: CommentUpdateWithoutOnCourseDataInput!
+}
+
+input CommentUpsertWithWhereUniqueWithoutAuthorInput {
+  where: CommentWhereUniqueInput!
+  update: CommentUpdateWithoutAuthorDataInput!
+  create: CommentCreateWithoutAuthorInput!
+}
+
+input CommentUpsertWithWhereUniqueWithoutOnCourseInput {
+  where: CommentWhereUniqueInput!
+  update: CommentUpdateWithoutOnCourseDataInput!
+  create: CommentCreateWithoutOnCourseInput!
+}
+
+input CommentWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  content: String
+  content_not: String
+  content_in: [String!]
+  content_not_in: [String!]
+  content_lt: String
+  content_lte: String
+  content_gt: String
+  content_gte: String
+  content_contains: String
+  content_not_contains: String
+  content_starts_with: String
+  content_not_starts_with: String
+  content_ends_with: String
+  content_not_ends_with: String
+  author: UserWhereInput
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  onCourse: CourseWhereInput
+  AND: [CommentWhereInput!]
+  OR: [CommentWhereInput!]
+  NOT: [CommentWhereInput!]
+}
+
+input CommentWhereUniqueInput {
+  id: ID
+}
+
 type Course {
   id: ID!
   chapterNumber: Int!
@@ -308,6 +558,7 @@ type Course {
   videoLink: String
   level: Class
   createdAt: DateTime!
+  comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
 }
 
 type CourseConnection {
@@ -325,11 +576,28 @@ input CourseCreateInput {
   pdfLink: String
   videoLink: String
   level: ClassCreateOneWithoutCoursesInput
+  comments: CommentCreateManyWithoutOnCourseInput
 }
 
 input CourseCreateManyWithoutLevelInput {
   create: [CourseCreateWithoutLevelInput!]
   connect: [CourseWhereUniqueInput!]
+}
+
+input CourseCreateOneWithoutCommentsInput {
+  create: CourseCreateWithoutCommentsInput
+  connect: CourseWhereUniqueInput
+}
+
+input CourseCreateWithoutCommentsInput {
+  id: ID
+  chapterNumber: Int!
+  title: String!
+  description: String!
+  illustration: String!
+  pdfLink: String
+  videoLink: String
+  level: ClassCreateOneWithoutCoursesInput
 }
 
 input CourseCreateWithoutLevelInput {
@@ -340,6 +608,7 @@ input CourseCreateWithoutLevelInput {
   illustration: String!
   pdfLink: String
   videoLink: String
+  comments: CommentCreateManyWithoutOnCourseInput
 }
 
 type CourseEdge {
@@ -509,6 +778,7 @@ input CourseUpdateInput {
   pdfLink: String
   videoLink: String
   level: ClassUpdateOneWithoutCoursesInput
+  comments: CommentUpdateManyWithoutOnCourseInput
 }
 
 input CourseUpdateManyDataInput {
@@ -546,6 +816,23 @@ input CourseUpdateManyWithWhereNestedInput {
   data: CourseUpdateManyDataInput!
 }
 
+input CourseUpdateOneRequiredWithoutCommentsInput {
+  create: CourseCreateWithoutCommentsInput
+  update: CourseUpdateWithoutCommentsDataInput
+  upsert: CourseUpsertWithoutCommentsInput
+  connect: CourseWhereUniqueInput
+}
+
+input CourseUpdateWithoutCommentsDataInput {
+  chapterNumber: Int
+  title: String
+  description: String
+  illustration: String
+  pdfLink: String
+  videoLink: String
+  level: ClassUpdateOneWithoutCoursesInput
+}
+
 input CourseUpdateWithoutLevelDataInput {
   chapterNumber: Int
   title: String
@@ -553,11 +840,17 @@ input CourseUpdateWithoutLevelDataInput {
   illustration: String
   pdfLink: String
   videoLink: String
+  comments: CommentUpdateManyWithoutOnCourseInput
 }
 
 input CourseUpdateWithWhereUniqueWithoutLevelInput {
   where: CourseWhereUniqueInput!
   data: CourseUpdateWithoutLevelDataInput!
+}
+
+input CourseUpsertWithoutCommentsInput {
+  update: CourseUpdateWithoutCommentsDataInput!
+  create: CourseCreateWithoutCommentsInput!
 }
 
 input CourseUpsertWithWhereUniqueWithoutLevelInput {
@@ -668,6 +961,9 @@ input CourseWhereInput {
   createdAt_lte: DateTime
   createdAt_gt: DateTime
   createdAt_gte: DateTime
+  comments_every: CommentWhereInput
+  comments_some: CommentWhereInput
+  comments_none: CommentWhereInput
   AND: [CourseWhereInput!]
   OR: [CourseWhereInput!]
   NOT: [CourseWhereInput!]
@@ -688,6 +984,12 @@ type Mutation {
   upsertClass(where: ClassWhereUniqueInput!, create: ClassCreateInput!, update: ClassUpdateInput!): Class!
   deleteClass(where: ClassWhereUniqueInput!): Class
   deleteManyClasses(where: ClassWhereInput): BatchPayload!
+  createComment(data: CommentCreateInput!): Comment!
+  updateComment(data: CommentUpdateInput!, where: CommentWhereUniqueInput!): Comment
+  updateManyComments(data: CommentUpdateManyMutationInput!, where: CommentWhereInput): BatchPayload!
+  upsertComment(where: CommentWhereUniqueInput!, create: CommentCreateInput!, update: CommentUpdateInput!): Comment!
+  deleteComment(where: CommentWhereUniqueInput!): Comment
+  deleteManyComments(where: CommentWhereInput): BatchPayload!
   createCourse(data: CourseCreateInput!): Course!
   updateCourse(data: CourseUpdateInput!, where: CourseWhereUniqueInput!): Course
   updateManyCourses(data: CourseUpdateManyMutationInput!, where: CourseWhereInput): BatchPayload!
@@ -729,6 +1031,9 @@ type Query {
   class(where: ClassWhereUniqueInput!): Class
   classes(where: ClassWhereInput, orderBy: ClassOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Class]!
   classesConnection(where: ClassWhereInput, orderBy: ClassOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ClassConnection!
+  comment(where: CommentWhereUniqueInput!): Comment
+  comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment]!
+  commentsConnection(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CommentConnection!
   course(where: CourseWhereUniqueInput!): Course
   courses(where: CourseWhereInput, orderBy: CourseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Course]!
   coursesConnection(where: CourseWhereInput, orderBy: CourseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CourseConnection!
@@ -1076,6 +1381,7 @@ input SubjectWhereUniqueInput {
 
 type Subscription {
   class(where: ClassSubscriptionWhereInput): ClassSubscriptionPayload
+  comment(where: CommentSubscriptionWhereInput): CommentSubscriptionPayload
   course(where: CourseSubscriptionWhereInput): CourseSubscriptionPayload
   subject(where: SubjectSubscriptionWhereInput): SubjectSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
@@ -1089,6 +1395,7 @@ type User {
   level: Class!
   password: String!
   createdAt: DateTime!
+  comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
 }
 
 type UserConnection {
@@ -1104,11 +1411,26 @@ input UserCreateInput {
   phone: String!
   level: ClassCreateOneWithoutStudentsInput!
   password: String!
+  comments: CommentCreateManyWithoutAuthorInput
 }
 
 input UserCreateManyWithoutLevelInput {
   create: [UserCreateWithoutLevelInput!]
   connect: [UserWhereUniqueInput!]
+}
+
+input UserCreateOneWithoutCommentsInput {
+  create: UserCreateWithoutCommentsInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateWithoutCommentsInput {
+  id: ID
+  name: String!
+  email: String!
+  phone: String!
+  level: ClassCreateOneWithoutStudentsInput!
+  password: String!
 }
 
 input UserCreateWithoutLevelInput {
@@ -1117,6 +1439,7 @@ input UserCreateWithoutLevelInput {
   email: String!
   phone: String!
   password: String!
+  comments: CommentCreateManyWithoutAuthorInput
 }
 
 type UserEdge {
@@ -1256,6 +1579,7 @@ input UserUpdateInput {
   phone: String
   level: ClassUpdateOneRequiredWithoutStudentsInput
   password: String
+  comments: CommentUpdateManyWithoutAuthorInput
 }
 
 input UserUpdateManyDataInput {
@@ -1289,16 +1613,37 @@ input UserUpdateManyWithWhereNestedInput {
   data: UserUpdateManyDataInput!
 }
 
+input UserUpdateOneRequiredWithoutCommentsInput {
+  create: UserCreateWithoutCommentsInput
+  update: UserUpdateWithoutCommentsDataInput
+  upsert: UserUpsertWithoutCommentsInput
+  connect: UserWhereUniqueInput
+}
+
+input UserUpdateWithoutCommentsDataInput {
+  name: String
+  email: String
+  phone: String
+  level: ClassUpdateOneRequiredWithoutStudentsInput
+  password: String
+}
+
 input UserUpdateWithoutLevelDataInput {
   name: String
   email: String
   phone: String
   password: String
+  comments: CommentUpdateManyWithoutAuthorInput
 }
 
 input UserUpdateWithWhereUniqueWithoutLevelInput {
   where: UserWhereUniqueInput!
   data: UserUpdateWithoutLevelDataInput!
+}
+
+input UserUpsertWithoutCommentsInput {
+  update: UserUpdateWithoutCommentsDataInput!
+  create: UserCreateWithoutCommentsInput!
 }
 
 input UserUpsertWithWhereUniqueWithoutLevelInput {
@@ -1387,6 +1732,9 @@ input UserWhereInput {
   createdAt_lte: DateTime
   createdAt_gt: DateTime
   createdAt_gte: DateTime
+  comments_every: CommentWhereInput
+  comments_some: CommentWhereInput
+  comments_none: CommentWhereInput
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]

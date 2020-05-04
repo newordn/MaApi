@@ -6,6 +6,7 @@ type Query{
     classes: [Class!]!
     courses: [Course!]!
     coursesByClass(classId:ID!):[Course!]!
+    commentsByCourse(courseId:ID!): [Comment!]!
     subjectsByClass(classId:ID!): [Subject!]!
 }
 type Mutation{
@@ -13,8 +14,9 @@ type Mutation{
     signUp(name:String!,email:String,phone:String!,level:ID!,password:String!): AuthPayload!
     course(chapterNumber:Int!,title:String!,description:String!,illustration:Upload,pdfLink:Upload,videoLink:String,level:ID!): Course!
     subject(title:String!,description:String!,illustration:Upload,td:Upload,correction:Upload,level:ID!): Subject!
-    classe(label:String!,description:String!,illustration:Upload!): Class!
-   }
+    classe(label:String!,description:String!,illustration:Upload!): Class! 
+    comment(content:String!,author:ID!,onCourse:ID!): Comment!
+    }
    type AuthPayload{
        token: String!
        user: User!
@@ -26,6 +28,14 @@ type User{
     phone: String!
     level: Class!
     password: String!
+    comments: [Comment!]!
+}
+type Comment{
+    id: ID!
+    content: String! 
+    author: User!
+    createdAt: String
+    onCourse: Course!
 }
 type Class{
     id: ID!
@@ -45,6 +55,7 @@ type Course{
     pdfLink: String
     videoLink: String
     level: Class
+    comments: [Comment]
 }
 type Subject{
     id: ID!

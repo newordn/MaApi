@@ -4,6 +4,7 @@ const Mutation = require('./resolvers/Mutation')
 const User = require('./resolvers/User')
 const Class = require('./resolvers/Class')
 const Course = require('./resolvers/Course')
+const Comment = require('./resolvers/Comment')
 const Subject = require('./resolvers/Subject')
 const {prisma} = require('./generated/prisma-client')
 const {storeUpload} = require('./helpers/upload')
@@ -18,7 +19,8 @@ const resolvers = {
     User,
     Class,
     Course,
-    Subject   
+    Subject,
+    Comment
 }
 const schema = makeExecutableSchema({typeDefs,resolvers})
 const server = new GraphQLServer({

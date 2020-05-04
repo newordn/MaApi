@@ -6,6 +6,14 @@ type User{
     level: Class! @relation(name:"UserLevel")
     password: String!
     createdAt: DateTime! @createdAt
+    comments: [Comment!]! @relation(name:"CommentUser")
+}
+type Comment{
+    id: ID! @id
+    content: String! 
+    author: User! @relation(name:"CommentUser")
+    createdAt: DateTime! @createdAt
+    onCourse: Course! @relation(name:"CommentCourse")
 }
 type Class{
     id: ID! @id
@@ -27,6 +35,7 @@ type Course{
     videoLink: String
     level: Class @relation(name:"ClassCourse")
     createdAt: DateTime! @createdAt
+    comments: [Comment] @relation(name:"CommentCourse")
 }
 type Subject{
     id: ID! @id

@@ -63,11 +63,17 @@ const subject = async (parent,args,context,info)=>{
     const subject = await context.prisma.createSubject({...args,td:td.path,correction:correction.path,illustration:illustration.path,level:{connect:{id:args.level}}})
     return subject
 }
+const comment = async (parent,args,context,info)=>{
+    console.log('comment mutation')
+ const comment = await context.prisma.createComment({...args,author:{connect:{id:args.author}},onCourse:{connect:{id:args.onCourse}}})
+  return comment
+}
 
 module.exports={
     logIn,
     signUp,
     course,
     classe,
-    subject
+    subject,
+    comment
 }
